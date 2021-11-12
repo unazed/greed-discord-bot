@@ -1,0 +1,19 @@
+{
+  "directories": {
+    "commands": "src/cmds"
+  },
+  "bot": {
+    "token": "OTA4NzQ0MDIwMjEyMTk5NTM0.YY6L0g.PYj1WOV0NTyFL2U4K-4N36VUa0Y",
+    "prefix": "~"
+  },
+  "commands": {
+    "dispatch": {
+      "hotswappable": true,
+      "load_from": "src/dispatch.py"
+    },
+    "modules": {
+      "auto_reload": true,
+      "reload_every": 5
+    }
+  }
+}
