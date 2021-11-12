@@ -8,8 +8,32 @@ import discord
 
 __COMMAND__ = "userinfo"
 
+FLAGS = {
+  "bug_hunter": ":x_bughunter:",
+  "bug_hunter_level_2": ":x_bughunterplus:",
+  "early_supporter": ":x_earlysupporter:",
+  "early_verified_bot_developer": ":x_botdev:",
+  "hypesquad_bravery": ":x_HypesquadBravery:",
+  "hypesquad_balance": ":x_HypesquadBalance:",
+  "hypesquad_brilliance": ":x_HypesquadBrilliance:",
+  "hypesquad": ":x_HypesquadEvent:",
+  "staff": ":x_DiscordStaff:",
+  "partner": ":x_DiscordPartner:"
+}
 
-async def position(guild: Guild, member: Member):
+
+def find_badges(user: discord.User):
+  flags = []
+  user_flags = user.public_flags
+  for name, emoji in FLAGS.items():
+    if getattr(user_flags, name, False):
+      flags.append(emoji)
+  if not flags:
+    return ''
+  return ' - ' + ' '.join(flags)
+
+
+def position(guild: Guild, member: Member):
   if member.created_at is None:
       return "n/a"
   pos = sum(other.joined_at < member.joined_at for other in guild.members if other != member and other.joined_at is not None)
@@ -25,7 +49,7 @@ async def invoke(bot: DiscordClient, message: Message, user_id: int):
   
   try:
     user = await message.guild.fetch_member(user_id)
-    join_position = await position(message.guild, user)
+    join_position = position(message.guild, user)
     guild_join_date = utils.format_date(user.joined_at)
     guild_boost_date = utils.format_date(user.premium_since)
   except discord.errors.NotFound:
@@ -38,8 +62,10 @@ async def invoke(bot: DiscordClient, message: Message, user_id: int):
       return await bot.alert_user(message.channel, message.author,
           "the given user ID doesn't exist")
 
+  additional = find_badges(user)
+
   embed = Embed(
-    title=str(user),
+    title=str(user) + additional,
     description=f"{user_id} - Join position: {join_position}",
     color=0x7d7d7d
     )

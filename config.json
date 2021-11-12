@@ -3,7 +3,7 @@
     "commands": "src/cmds"
   },
   "bot": {
-    "token": "x.x.x-x",
+    "token": "token",
     "prefix": "~"
   },
   "commands": {
