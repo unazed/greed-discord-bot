@@ -16,7 +16,7 @@ def translate_path_to_module(path: str) -> str:
   return path.replace("/", ".").rstrip(".py")
 
 
-def load_command_dispatch(path: str) -> Tuple[Callable, Callable]:
+def load_command_dispatch(path: str) -> Callable:
   module = importlib.import_module(translate_path_to_module(path))
 
   assert (gen_dispatch := getattr(
